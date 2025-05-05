@@ -7,23 +7,23 @@ from rest_framework import status
 from openai import OpenAI
 from django.shortcuts import render
 import os
-from dotenv import load_dotenv
-load_dotenv()
 import logging
 from .serializers import PaymentSerializer
 from .models import Payment
 import stripe
-
+from dotenv import load_dotenv
+load_dotenv('.env')
 logger = logging.getLogger(__name__)
 
-my_api_key = os.getenv('STRIPE_SECRET_KEY')
-stripe.api_key = my_api_key
+
 
 
 class PaymentListView(ListAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 
+my_api_key = os.getenv('STRIPE_SECRET_KEY')
+stripe.api_key = my_api_key
 
 class CreatePaymentIntentView(APIView):
     def post(self, request):
@@ -43,7 +43,6 @@ class CreatePaymentIntentView(APIView):
                 amount=int(amount),  # Amount in cents
                 currency=currency,
             )
-
             # Save to the database
             payment_data = {
                 'amount': amount,
@@ -65,12 +64,6 @@ class CreatePaymentIntentView(APIView):
 
 
 
-
-def test_func(request):
-    html = '<html lang="en"><body>Hello you.</body></html>'
-    return HttpResponse(html)
-
-
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -80,7 +73,6 @@ class UserProfileView(APIView):
             'username': user.username,
             'email': user.email
         })
-
 
 
 
