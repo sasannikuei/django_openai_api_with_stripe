@@ -12,7 +12,7 @@ from .serializers import PaymentSerializer
 from .models import Payment
 import stripe
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv()
 logger = logging.getLogger(__name__)
 
 
